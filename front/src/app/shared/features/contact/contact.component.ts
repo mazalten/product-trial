@@ -22,12 +22,12 @@ import { ToastModule } from 'primeng/toast';
 })
 export class ContactComponent {
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
 
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<Contact>();
 
-   newContact(): Contact {
+  newContact(): Contact {
     return {
       mail: '',
       message: ''

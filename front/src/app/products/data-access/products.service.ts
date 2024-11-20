@@ -9,7 +9,7 @@ import { catchError, Observable, of, tap } from "rxjs";
 
     private readonly http = inject(HttpClient);
     private readonly path = "http://localhost:8080/api/products";
-    
+
     private readonly _products = signal<Product[]>([]);
 
     public readonly products = this._products.asReadonly();

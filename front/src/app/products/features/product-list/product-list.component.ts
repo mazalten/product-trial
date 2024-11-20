@@ -36,7 +36,7 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, RatingModule, FormsModule, ChipModule, CommonModule,DropdownModule],
+  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, RatingModule, FormsModule, ChipModule, CommonModule, DropdownModule],
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
@@ -61,7 +61,7 @@ export class ProductListComponent implements OnInit {
     this.sortOptions = [
       { label: 'Prix descendant', value: '!price' },
       { label: 'Prix ascendant', value: 'price' }
-  ];
+    ];
   }
 
   public onCreate() {
@@ -105,11 +105,11 @@ export class ProductListComponent implements OnInit {
     let value = event.value;
 
     if (value.indexOf('!') === 0) {
-        this.sortOrder = -1;
-        this.sortField = value.substring(1, value.length);
+      this.sortOrder = -1;
+      this.sortField = value.substring(1, value.length);
     } else {
-        this.sortOrder = 1;
-        this.sortField = value;
+      this.sortOrder = 1;
+      this.sortField = value;
     }
-}
+  }
 }

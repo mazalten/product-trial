@@ -10,8 +10,8 @@ import { CartService } from 'app/products/data-access/cart.service';
 
 @Component({
     providers: [DialogService, MessageService, ProductsService],
-    standalone:true,
-    imports:[TableModule, ButtonModule],
+    standalone: true,
+    imports: [TableModule, ButtonModule],
     template: `
         <p-table [value]="cart.products" responsiveLayout="scroll" [rows]="5" [responsive]="true">
             <ng-template pTemplate="header">
@@ -39,13 +39,13 @@ import { CartService } from 'app/products/data-access/cart.service';
         </p-table>`
 })
 export class ProductListCard implements OnInit {
-    constructor(private cartService: CartService, private dialogService: DialogService, private ref: DynamicDialogRef) {}
+    constructor(private cartService: CartService, private dialogService: DialogService, private ref: DynamicDialogRef) { }
 
-    cart!: Cart; 
+    cart!: Cart;
 
     ngOnInit() {
         this.cart = this.cartService.getCart();
-    console.log('Produits du panier:', this.cart.products);
+        console.log('Produits du panier:', this.cart.products);
     }
 
     removeProduct(product: Product) {

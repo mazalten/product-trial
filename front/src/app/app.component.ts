@@ -1,5 +1,5 @@
 import {
-  Component,
+    Component,
 } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { SplitterModule } from 'primeng/splitter';
@@ -7,34 +7,34 @@ import { BadgeModule } from 'primeng/badge';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PanelMenuComponent } from "./shared/ui/panel-menu/panel-menu.component";
-import { ProductListCard } from "./products/ui/product-card/productlistdemo";
+import { ProductListCard } from "./products/ui/product-card/productlistCard";
 import { MessageService } from "primeng/api";
 import { Footer } from "./products/ui/product-card/footer";
 import { CartService } from "./products/data-access/cart.service";
 import { Subscription } from "rxjs";
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
-  standalone: true,
-  imports: [RouterModule, SplitterModule, ToolbarModule, PanelMenuComponent, BadgeModule],
+    selector: "app-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"],
+    standalone: true,
+    imports: [RouterModule, SplitterModule, ToolbarModule, PanelMenuComponent, BadgeModule],
 })
-export class AppComponent{
-  title = "ALTEN SHOP";
+export class AppComponent {
+    title = "ALTEN SHOP";
 
-  constructor(public dialogService: DialogService, public messageService: MessageService, public cartService : CartService) {}
+    constructor(public dialogService: DialogService, public messageService: MessageService, public cartService: CartService) { }
 
     ref: DynamicDialogRef | undefined;
     totalQuantity: number = 0;
     private cartSubscription: Subscription = new Subscription;
 
     ngOnInit(): void {
-      // Récupérer la somme des quantités dès que le composant est initialisé
-      this.cartSubscription = this.cartService.getCartObservable().subscribe((cart) => {
-        this.totalQuantity = this.cartService.getTotalQuantity();  // Mettre à jour la somme des quantités
-      });
-            console.log('Somme des quantités:', this.totalQuantity);
+        // Récupérer la somme des quantités dès que le composant est initialisé
+        this.cartSubscription = this.cartService.getCartObservable().subscribe((cart) => {
+            this.totalQuantity = this.cartService.getTotalQuantity();  // Mettre à jour la somme des quantités
+        });
+        console.log('Somme des quantités:', this.totalQuantity);
     }
 
     public showCart() {
