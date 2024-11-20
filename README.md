@@ -1,4 +1,3 @@
-@@ -0,0 +1,79 @@
 # Consignes
 
 - Vous êtes développeur front-end : vous devez réaliser les consignes décrites dans le chapitre [Front-end](#Front-end)
@@ -78,4 +77,3 @@ Le back-end créé doit pouvoir gérer les produits dans une base de données SQ
 ## Bonus
 
 Vous pouvez ajouter des tests Postman ou Swagger pour valider votre API
-No newline at end of file

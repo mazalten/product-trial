@@ -1,0 +1,26 @@
+<div class="card flex justify-content-center">
+  <p-card header="Formulaire de contact">
+    <form #form="ngForm" (ngSubmit)="onSave()">
+
+      <div class="form-field">
+        <label for="name">E-mail</label>
+        <input pInputText type="email" id="mail" name="mail" [(ngModel)]="newContact().mail" required email>
+      </div>
+
+      <div class="form-field">
+        <label for="description">Message</label>
+        <textarea pInputTextarea id="message" name="message" maxlength="300" rows="5" cols="30"
+          [(ngModel)]="newContact().message" required>
+        </textarea>
+      </div>
+
+      <div class="card flex flex-wrap gap-3 justify-content-center">
+        <p-toast />
+        <p-button type="submit" [disabled]="!form.valid" label="Envoyer" icon="pi pi-check" class="block text-center"
+          severity="info" />
+
+        <p-button type="button" label="Annuler" icon="pi pi-times" class="block text-center" severity="warning" />
+      </div>
+    </form>
+  </p-card>
+</div>
