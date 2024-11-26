@@ -51,5 +51,13 @@ public class CartService {
     public Optional<Cart> getCartByUser(User user) {
         return cartRepository.findByOwner(user);
     }
+
+    public Cart getCartForUser(User user) {
+        return cartRepository.findByOwner(user).orElse(new Cart());
+    }
+
+    public void updateCart(Cart cart) {
+        cartRepository.save(cart);
+    }
 }
 

@@ -1,6 +1,7 @@
 package com.alten.producttrial.services;
 
 import com.alten.producttrial.dtos.TokenResponse;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,12 +33,24 @@ public class JwtService {
     }
 
     public String extractEmail(String token) {
-        return Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        // Supprimer le préfixe "Bearer " s'il existe
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7); // Retirer le préfixe
+        }
+
+        try {
+            // Parser et extraire l'email du token
+            return Jwts.parser()
+                    .setSigningKey(secret)  // Assurez-vous que votre secret est correct
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();  // Récupérer l'email stocké dans le 'subject' du JWT
+        } catch (JwtException e) {
+            // Gestion des exceptions liées au token JWT
+            throw new RuntimeException("Invalid token", e);  // Vous pouvez personnaliser le message d'exception
+        }
     }
+
 
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());

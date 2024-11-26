@@ -2,56 +2,55 @@ package com.alten.producttrial.controllers;
 
 import com.alten.producttrial.models.Cart;
 import com.alten.producttrial.models.User;
+import com.alten.producttrial.repositories.UserRepository;
 import com.alten.producttrial.services.CartService;
-import com.alten.producttrial.services.UserService;
+import com.alten.producttrial.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
+
     @Autowired
     private CartService cartService;
 
     @Autowired
-    private UserService userService;
+    private JwtService jwtTokenProvider;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    // Récupérer le panier de l'utilisateur
+    @GetMapping
+    public Cart getCart(@RequestHeader("Authorization") String token) {
+        String email = jwtTokenProvider.extractEmail(token);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        return cartService.getCartForUser(user);
+    }
+
+    // Ajouter un produit au panier
     @PostMapping("/add/{productId}")
-    public ResponseEntity<?> addProductToCart(@RequestParam Long userId, @PathVariable Long productId) {
-        Optional<User> optionalUser = userService.findById(userId);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            Cart updatedCart = cartService.addProductToCart(user, productId);
-            return ResponseEntity.ok(updatedCart);
-        }
-        return ResponseEntity.notFound().build();
+    public void addProductToCart(@PathVariable Long productId, @RequestHeader("Authorization") String token) {
+        String email = jwtTokenProvider.extractEmail(token);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        cartService.addProductToCart(user, productId);
     }
 
-    @PostMapping("/remove/{productId}")
-    public ResponseEntity<?> removeProductFromCart(@RequestParam Long userId, @PathVariable Long productId) {
-        Optional<User> optionalUser = userService.findById(userId);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            Cart updatedCart = cartService.removeProductFromCart(user, productId);
-            return ResponseEntity.ok(updatedCart);
-        }
-        return ResponseEntity.notFound().build();
+    // Supprimer un produit du panier
+    @DeleteMapping("/remove/{productId}")
+    public void removeProductFromCart(@PathVariable Long productId, @RequestHeader("Authorization") String token) {
+        String email = jwtTokenProvider.extractEmail(token);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        cartService.removeProductFromCart(user, productId);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> getCart(@RequestParam Long userId) {
-        Optional<User> optionalUser = userService.findById(userId);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            Optional<Cart> optionalCart = cartService.getCartByUser(user);
-            if (optionalCart.isPresent()) {
-                return ResponseEntity.ok(optionalCart.get());
-            }
-        }
-        return ResponseEntity.notFound().build();
+    // Mettre à jour le panier
+    @PostMapping("/update")
+    public void updateCart(@RequestBody Cart cart, @RequestHeader("Authorization") String token) {
+        String email = jwtTokenProvider.extractEmail(token);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        cart.setOwner(user);
+        cartService.updateCart(cart);
     }
 }
-

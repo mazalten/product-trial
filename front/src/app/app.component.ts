@@ -34,9 +34,8 @@ export class AppComponent {
     isAuthenticated: boolean = false;
 
     ngOnInit(): void {
-        // Récupérer la somme des quantités dès que le composant est initialisé
         this.cartSubscription = this.cartService.getCartObservable().subscribe((cart) => {
-            this.totalQuantity = this.cartService.getTotalQuantity();  // Mettre à jour la somme des quantités
+            this.totalQuantity = this.cartService.getTotalQuantity();
         });
         this.isAuthenticated = this.authService.isLoggedIn();
     }
