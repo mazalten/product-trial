@@ -1,0 +1,39 @@
+<div class="card flex justify-content-center">
+    <p-card header="Connexion" styleClass="w-50">
+        <form #form="ngForm" (ngSubmit)="login()" novalidate>
+
+            <!-- E-mail -->
+            <div class="form-field mb-3">
+                <label for="email" class="block font-bold mb-2">E-mail</label>
+                <input pInputText type="email" id="email" name="email" [(ngModel)]="email" 
+                    required email class="w-full p-inputtext" #emailInput="ngModel">
+                <div *ngIf="emailInput.invalid && emailInput.touched" class="error-message">
+                    L'e-mail est obligatoire et doit être valide.
+                </div>
+            </div>
+
+            <!-- Mot de passe -->
+            <div class="form-field mb-3">
+                <label for="password" class="block font-bold mb-2">Mot de passe</label>
+                <input pInputText type="password" id="password" name="password" [(ngModel)]="password" 
+                    required class="w-full p-inputtext" #passwordInput="ngModel">
+                <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error-message">
+                    Le mot de passe est obligatoire.
+                </div>
+            </div>
+
+            <!-- Boutons de soumission et de redirection -->
+            <div class="card flex flex-wrap gap-3 justify-content-center">
+                <p-toast></p-toast>
+
+                <!-- Bouton de connexion -->
+                <p-button type="submit" [disabled]="!form.valid" label="Se connecter" icon="pi pi-check"
+                    class="w-25" severity="info"></p-button>
+
+                <!-- Bouton redirection vers la page d'inscription -->
+                <p-button type="button" label="Créer un compte" [routerLink]="['/register']" icon="pi pi-user"
+                    class="w-25" severity="warning"></p-button>
+            </div>
+        </form>
+    </p-card>
+</div>

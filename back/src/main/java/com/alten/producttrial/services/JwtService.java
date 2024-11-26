@@ -1,5 +1,6 @@
 package com.alten.producttrial.services;
 
+import com.alten.producttrial.dtos.TokenResponse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,15 +20,15 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String email) {
+    public TokenResponse generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
-        return Jwts.builder()
+        return new TokenResponse(Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
+                .compact());
     }
 
     public String extractEmail(String token) {

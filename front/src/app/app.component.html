@@ -1,16 +1,18 @@
-<p-toolbar [style]="{ height: '100px' }">
+<p-toolbar *ngIf="isAuthenticated" [style]="{ height: '100px' }">
     <div class="p-toolbar-group-start">
         <img src="assets/icons/icon-72x72.png" alt="logo" />
     </div>
     <div class="p-toolbar-group-center">
         {{ title }}
     </div>
-    <div class="p-toolbar-group-end">
+    <div class="p-toolbar-group-end" style="display: grid; grid-template-columns: auto auto; gap: 1rem;">
         <i class="pi pi-shopping-cart" style="font-size: 2rem" (click)="showCart()" pBadge [value]="totalQuantity"></i>
+
+        <p-button icon="pi pi-power-off" (click)="logout()" severity="danger"></p-button>
     </div>
 </p-toolbar>
 <p-splitter [panelSizes]="[20, 80]" [style]="{ height: 'calc(100vh - 100px)' }">
-    <ng-template pTemplate>
+    <ng-template *ngIf="isAuthenticated" pTemplate>
         <div class="w-full">
             <app-panel-menu />
         </div>

@@ -1,6 +1,7 @@
 package com.alten.producttrial.controllers;
 
 import com.alten.producttrial.dtos.LoginRequest;
+import com.alten.producttrial.dtos.TokenResponse;
 import com.alten.producttrial.repositories.UserRepository;
 import com.alten.producttrial.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class AuthController {
     private JwtService jwtService;
 
     @PostMapping
-    public ResponseEntity<String> generateToken(@RequestBody LoginRequest request) {
+    public ResponseEntity<TokenResponse> generateToken(@RequestBody LoginRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
@@ -33,7 +34,7 @@ public class AuthController {
             throw new RuntimeException("Invalid credentials");
         }
 
-        String token = jwtService.generateToken(user.getEmail());
+        TokenResponse token = jwtService.generateToken(user.getEmail());
         return ResponseEntity.ok(token);
     }
 }

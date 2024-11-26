@@ -39,6 +39,6 @@ export class ContactComponent {
   }
 
   onSave() {
-    this.messageService.add({ severity: 'success', summary: 'Succés', detail: 'Message envoyé' });
+    this.messageService.add({ severity: 'success', summary: 'Succés', detail: 'Demande de contact envoyée avec succès' });
   }
 }

@@ -1,7 +1,7 @@
 import {
     Component,
 } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { SplitterModule } from 'primeng/splitter';
 import { BadgeModule } from 'primeng/badge';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -12,29 +12,33 @@ import { MessageService } from "primeng/api";
 import { Footer } from "./products/ui/product-card/footer";
 import { CartService } from "./products/data-access/cart.service";
 import { Subscription } from "rxjs";
+import { AuthService } from "./services/auth.service";
+import { CommonModule } from "@angular/common";
+import { ButtonModule } from "primeng/button";
 
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.scss"],
     standalone: true,
-    imports: [RouterModule, SplitterModule, ToolbarModule, PanelMenuComponent, BadgeModule],
+    imports: [RouterModule, SplitterModule, ToolbarModule, PanelMenuComponent, BadgeModule, CommonModule, ButtonModule],
 })
 export class AppComponent {
     title = "ALTEN SHOP";
 
-    constructor(public dialogService: DialogService, public messageService: MessageService, public cartService: CartService) { }
+    constructor(public dialogService: DialogService, public messageService: MessageService, public cartService: CartService, private authService : AuthService, private router: Router) { }
 
     ref: DynamicDialogRef | undefined;
     totalQuantity: number = 0;
     private cartSubscription: Subscription = new Subscription;
+    isAuthenticated: boolean = false;
 
     ngOnInit(): void {
         // Récupérer la somme des quantités dès que le composant est initialisé
         this.cartSubscription = this.cartService.getCartObservable().subscribe((cart) => {
             this.totalQuantity = this.cartService.getTotalQuantity();  // Mettre à jour la somme des quantités
         });
-        console.log('Somme des quantités:', this.totalQuantity);
+        this.isAuthenticated = this.authService.isLoggedIn();
     }
 
     public showCart() {
@@ -66,6 +70,12 @@ export class AppComponent {
             this.messageService.add({ severity: 'info', summary: 'Maximized', detail: `maximized: ${value.maximized}` });
         });
     }
+
+    logout(): void {
+        this.authService.logout();  // Efface le token
+        this.isAuthenticated = false;  // Met à jour l'état d'authentification
+        this.router.navigate(['/login']);  // Redirige vers la page de connexion
+      }
 
     ngOnDestroy() {
         if (this.ref) {
