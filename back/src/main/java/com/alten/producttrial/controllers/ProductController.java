@@ -23,16 +23,6 @@ public class ProductController {
         return new ResponseEntity<>(productService.createProduct(product), HttpStatus.CREATED);
     }
 
-    @PostMapping("/multiple")
-    public ResponseEntity<List<Product>> createProducts(@RequestBody List<Product> products) {
-        try {
-            products.stream().forEach(product -> productService.createProduct(product));
-            return new ResponseEntity<>(products, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(products, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
