@@ -11,8 +11,8 @@
         <p-button icon="pi pi-power-off" (click)="logout()" severity="danger"></p-button>
     </div>
 </p-toolbar>
-<p-splitter [panelSizes]="[20, 80]" [style]="{ height: 'calc(100vh - 100px)' }">
-    <ng-template *ngIf="isAuthenticated" pTemplate>
+<p-splitter *ngIf="isAuthenticated" [panelSizes]="[20, 80]" [style]="{ height: 'calc(100vh - 100px)' }">
+    <ng-template pTemplate>
         <div class="w-full">
             <app-panel-menu />
         </div>
