@@ -5,11 +5,13 @@ import com.alten.producttrial.models.User;
 import com.alten.producttrial.repositories.UserRepository;
 import com.alten.producttrial.services.CartService;
 import com.alten.producttrial.services.JwtService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")
+@SecurityRequirement(name = "bearerAuth")
 public class CartController {
 
     @Autowired

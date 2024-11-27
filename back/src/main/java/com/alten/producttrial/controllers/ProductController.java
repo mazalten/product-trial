@@ -2,6 +2,7 @@ package com.alten.producttrial.controllers;
 
 import com.alten.producttrial.models.Product;
 import com.alten.producttrial.services.ProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
     @Autowired
