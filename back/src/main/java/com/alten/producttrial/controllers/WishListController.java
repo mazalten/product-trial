@@ -22,7 +22,7 @@ public class WishListController {
     private UserService userService;
 
     @PostMapping("/add/{productId}")
-    public ResponseEntity<?> addProductToWishlist(@RequestParam Long userId, @PathVariable Long productId) {
+    public ResponseEntity<WishList> addProductToWishlist(@RequestParam Long userId, @PathVariable Long productId) {
         Optional<User> optionalUser = userService.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -33,7 +33,7 @@ public class WishListController {
     }
 
     @PostMapping("/remove/{productId}")
-    public ResponseEntity<?> removeProductFromWishlist(@RequestParam Long userId, @PathVariable Long productId) {
+    public ResponseEntity<WishList> removeProductFromWishlist(@RequestParam Long userId, @PathVariable Long productId) {
         Optional<User> optionalUser = userService.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -44,7 +44,7 @@ public class WishListController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> getWishlist(@RequestParam Long userId) {
+    public ResponseEntity<WishList> getWishlist(@RequestParam Long userId) {
         Optional<User> optionalUser = userService.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
