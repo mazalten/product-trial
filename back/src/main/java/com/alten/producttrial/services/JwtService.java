@@ -39,15 +39,13 @@ public class JwtService {
         }
 
         try {
-            // Parser et extraire l'email du token
             return Jwts.parser()
-                    .setSigningKey(secret)  // Assurez-vous que votre secret est correct
+                    .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody()
-                    .getSubject();  // Récupérer l'email stocké dans le 'subject' du JWT
+                    .getSubject();
         } catch (JwtException e) {
-            // Gestion des exceptions liées au token JWT
-            throw new RuntimeException("Invalid token", e);  // Vous pouvez personnaliser le message d'exception
+            throw new JwtException("Invalid token", e);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.alten.producttrial.configs;
 
 import com.alten.producttrial.services.JwtService;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
@@ -26,16 +27,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String token = extractToken(request);
-        if (token != null && jwtService.validateToken(token, extractEmail(token))) {
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(extractEmail(token), null, null);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            if (token != null && jwtService.validateToken(token, extractEmail(token))) {
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(extractEmail(token), null, null);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            if (isSensitiveAction(request) && !jwtService.isAdmin(authentication)) {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.getWriter().write("Access denied: Only admin@admin.com can perform this action.");
-                return;
+                if (isSensitiveAction(request) && !jwtService.isAdmin(authentication)) {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.getWriter().write("Access denied: Only admin@admin.com can perform this action.");
+                    return;
+                }
             }
+        }
+        catch (JwtException jwtException){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Access denied: Invalid Token.");
+            return;
         }
 
         filterChain.doFilter(request, response);
